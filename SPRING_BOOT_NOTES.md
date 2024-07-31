@@ -1,4 +1,4 @@
-### What is JAR file?
+re### What is JAR file?
 - JAR stands for Java ARchive
 - JAR is a package file format typically used to aggregate many Java class files and associated metadata and resources (text, images, etc.) into one file to distribute application software or libraries on the Java platform
 - JAR files are built on the ZIP file format and have the .jar file extension
@@ -92,3 +92,126 @@
 ### How to find Dependency Coordinates?
 1. Visit the project page - spring.io, hibernate.org, etc.
 2. Visit https://central.sonatype.org/ - Maven Central Repository
+
+### Maven wrapper files
+- Maven wrapper files allow you to run Maven without installing it
+- No need to have Maven installed or present on your path
+- If correct version of Maven is not installed, it will download it for you automatically
+- Two files
+  - mvnw - Maven wrapper for Unix
+  - mvnw.cmd - Maven wrapper for Windows
+- If you already installed Maven then you can ignore / delete these files
+- if you are using Maven wrapper files, you can run Maven commands like this
+  - `./mvnw clean install`
+  - `./mvnw spring-boot:run`
+  - `./mvnw clean compile test`
+- If maven already installed then you can run Maven commands like this
+  - `mvn clean install`
+  - `mvn spring-boot:run`
+  - `mvn clean compile test`
+
+### Maven POM file - pom.xml
+- pom.xml includes info that you entered in Spring Initializr
+- pom.xml includes dependencies that you entered in Spring Initializr
+- For example, Spring Boot Starter Web, Spring Boot DevTools, Lombok, Spring Boot Starter Test
+- includes spring-boot-maven-plugin - used for excutable JAR or WAR file and can easily run your application
+- `./mvnw package` - will create a JAR file in the target directory
+- `./mvnw spring-boot:run` - will run your application
+
+### Java source code
+- main spring boot application class - `@SpringBootApplication` annotation - created by Spring Initializr
+- RestController class - that we created for our REST API
+
+### Application properties - `application.properties` file
+- Contains configuration for your application
+- For example, server port, database connection details, etc.
+- Spring Boot will automatically read this file and apply the configuration
+- You can override the configuration in `application.properties` file using command line arguments
+- For example, `java -jar target/spring-boot-rest-api-0.0.1-SNAPSHOT.jar --server.port=8081`
+- Read data from `application.properties` file using `@Value` annotation. example - `@Value("${welcome.message}")`
+
+### Static content - `src/main/resources/static` directory
+- Contains static content like HTML, CSS, JS files
+- Spring Boot will automatically serve these files
+- By default, Spring Boot will serve static content from `/static` directory
+- For example, `src/main/resources/static/index.html` will be available at `http://localhost:8080/index.html`
+
+### Warning - `src/main/webapp` directory - Do not use this directory
+- if your application packaging is JAR, then `src/main/webapp` directory will not be used
+- Although it is a standard maven directory in a WAR project, it will not be used in a JAR project
+- Beacuse it is siliently ignored by most build tools if you are packaging as JAR
+- your many hours of hard work will be wasted if you use `src/main/webapp` directory in a JAR project
+
+### Templates - `src/main/resources/templates` directory
+- Spring Boot includes auto-configuration for Thymeleaf, FreeMarker, and Mustache temoplate engines
+
+### Unit Tests - `src/test/java` directory
+- Spring boot unit test class created by Spring Initializr
+- `@SpringBootTest` annotation - will start the Spring application context
+
+### Spring boot starters
+- The problem is Building Spring app is complex and really hard. You need to add a lot of dependencies
+  - Which Maven dependencies do I need?
+  - It is hard because you need to know which dependencies to add
+- Solution is Spring boot starters
+- A curated list of dependencies that you can add to your project
+- A collection of related dependencies grouped together
+- Tested and verified by Spring Development team
+- Makes it easier for the developers to get started with Spring
+- Reduces the amount of maven configurations
+- For example, `spring-boot-starter-web` includes all the dependencies you need to build a web application
+- In Spring Initializr, you selected Spring Boot Starter Web, Spring Boot DevTools, Lombok, Spring Boot Starter Test
+- And it will add in `pom.xml` file
+
+### What is in the starters?
+- View the starter's dependencies in the `pom.xml` file
+- For example, `spring-boot-starter-web` includes
+  - spring-boot-starter
+  - spring-boot-starter-json
+  - spring-boot-starter-tomcat
+  - spring-web
+  - spring-webmvc
+  - etc.
+- In IDE like Eclipse, you can view the dependencies in the Maven Dependencies folder
+- In VS Code, you can view the dependencies in the External Libraries folder
+
+### Spring Boot starter parent
+- The parent of all Spring Boot starters is `spring-boot-starter-parent`
+- It provides default configurations for your project - Java version, encoding, etc.
+- It also provides dependency management - versions of dependencies
+- This is special starter that provides Maven defaults
+- Maven defaults defined int the starter parent
+  - Java version
+  - Encoding
+  - Plugin versions
+  - Dependency versions
+- To override the default configurations, you can specify the properties in your `pom.xml` file
+  - For example, `<java.version>17</java.version>` in the `pom.xml` file under `<properties>` tag
+- for `spring-boot-starter-*` dependencies, you don't need to specify the version, Inherit from `spring-boot-starter-parent`
+- default configurations of spring bott plugin
+  - `spring-boot-maven-plugin` - used for excutable JAR or WAR file and can easily run your application
+
+### Benefits of Spring Boot Starter Parent
+- Default maven configurations - Java version, encoding, etc.
+- Dependency management
+  - Use version of parent only
+  - `spring-boot-starter-*` dependencies inherit from parent version
+
+### Spring Boot DevTools
+- Problem - When you make changes to your code, you need to restart your application
+- Solution - Spring Boot DevTools
+- automatically restarts your application when you make changes to your code
+- Simply add the dependency to your `pom.xml` file
+- No need to write additional code
+- No need to restart your application
+
+### IMP
+Annotations - mapping annotations REST APIS
+Database connections annotations - JPA
+Oauth2 / Oauth
+GraphQL
+IOC
+AOP
+
+### Installation steps I followed
+- Maven installed by brew
