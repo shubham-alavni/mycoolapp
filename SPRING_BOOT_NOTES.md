@@ -291,6 +291,78 @@
 - Spring Boot provides a lot of properties to configure the server
 - Grouped into categories - Core, Web, Security, Data, Actuator, Integration, DevTools, Testing, etc.
 
+### Inversion of Control (IOC)
+
+- The approach of outsourcing the construction and management of objects
+- Scenarios - MyApp and CricketCoach and getDailyWorkout()
+  - MyApp - Main class
+  - CricketCoach - Coach interface implementation
+- App Should be configurable
+  - MyApp should be able to get the daily workout from any coach for cricket, baseball, football, Hockey, etc.
+- Ideal solution
+  - Object factory (Spring Container) should be able to provide the object of the coach based on the sport
+  - On the basis of the sport(Configuration), configurations like cricket, baseball, football, Hockey, etc.
+- Spring Container - Two Primary functions
+  - create and manage objects (Inversion of Control)
+  - Inject object's dependencies (Dependency Injection)
+- Configuring Spring Container
+  - XML configuration file - Legacy ❌
+  - Java Annotations - Modern ✅
+  - Java Source Code - Modern ✅
+  
+### Dependency Injection (DI)
+
+- The dependency inversion principle. It is a specific form of inversion of control where the concern being inverted is the process of obtaining the needed dependencies.
+- Example - I wanna purchase a car, give me a car object from CarFactory(Spring Container)
+- Now CarFactory in the background will collect all the parts of the car and assemble them and give you the car object
+- You don't need to worry about the parts of the car and assembling them
+- You just need to ask for the car object
+- So Parts of the car are dependencies and Car object is the main object
+- So In Coach example, Coach object returns from the Object factory(Spring Container) and Coach object has dependencies. So Object factory(Spring Container) will inject the dependencies into the Coach object on the basis of the configuration like cricket, baseball, football, Hockey, etc.
+- Demo Example -
+  - Coach will provide the daily workout
+  - The DemoController wants to use a Coach
+    - New Helper: Coach
+    - This is a dependency
+    - Need to inject the dependency into the DemoController
+
+### Types of Injections
+
+- There are multiple types of injections with Spring
+  - Constructor Injection
+    - Use this when you have required dependancies
+    - Generally recommended by Spring community as first choice
+  - Setter Injection
+    - Use this when you have optional dependancies
+    - If dependency not set, default logic will be used
+
+### What is Spring Auto-wiring?
+
+- For Dependency Injection, Spring can automatically identify the dependencies that need to be injected
+- Spring will look for a class that matches the type of the dependency
+- ***Matches by type*** - class or interface
+- Example
+  - Injecting coach implementation
+  - Spring will scan for `@Component`
+  - Anyone implements of Coach interface?
+  - If so, Let's inject them. For example, CricketCoach, BaseballCoach, etc.
+
+### Example
+
+- Web Browser -> Request -> /dailyWorkout -> DemoController -> Coach -> getDailyWorkout()
+- Coach -> getDailyWorkout() -> "Practice fast bowling for 15 minutes" -> DemoController -> Response -> Web Browser
+- Steps
+  - Define the Coach interface
+  - Create DemoController
+  - Create Constructor In your class for injections
+  - Add @GetMapping("/dailyWorkout") to the method
+
+### `@Component` annotation
+
+### `@Autowired` annotation
+
+### `@GetMapping` annotation
+
 ### IMP
 
 Annotations - mapping annotations REST APIS
